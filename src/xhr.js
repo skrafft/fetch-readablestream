@@ -39,7 +39,11 @@ export function makeXhrTransport({ responseType, responseParserFactory }) {
     xhr.withCredentials = (options.credentials !== 'omit');
     if (options.headers) {
       for (const pair of options.headers.entries()) {
-        xhr.setRequestHeader(pair[0], pair[1]);
+        if (typeof pair[1] === 'object' && pair[1].length === 2) {
+          xhr.setRequestHeader(pair[1][0], pair[1][1]);
+	} else {
+          xhr.setRequestHeader(pair[0], pair[1]);
+        }
       }
     }
 
